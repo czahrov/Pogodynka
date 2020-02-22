@@ -1,0 +1,258 @@
+.bg-light {
+  background-color: #fff;
+}
+
+.fc-light {
+  color: #fff;
+}
+
+.bg-blue-dark {
+  background-color: #27329e;
+}
+
+.fc-blue-dark {
+  color: #27329e;
+}
+
+.bg-blue-light {
+  background-color: #2576f9;
+}
+
+.fc-blue-light {
+  color: #2576f9;
+}
+
+.bg-dark {
+  background-color: #000;
+}
+
+.fc-dark {
+  color: #000;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+  line-height: 1em;
+  cursor: default;
+}
+
+body {
+  background-image: linear-gradient(180deg, #1d2575, transparent);
+  background-repeat: no-repeat;
+}
+
+body #view {
+  position: relative;
+  margin: 15px 32px 20px;
+  border-radius: 10px;
+  background-image: linear-gradient(0deg, #0547b3, transparent);
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+body #view > .wrapper {
+  padding: 32px 11px;
+  transition: all 1s ease-in-out;
+}
+
+body #view > .wrapper.preloader {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+body #view > .wrapper.preloader img {
+  -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+}
+
+body #view > .wrapper.content {
+  position: relative;
+}
+
+body #view .city {
+  margin-bottom: 30px;
+}
+
+body #view .city #cityName, body #view .city #cityName:hover {
+  color: #fff;
+}
+
+body #view .date {
+  margin-bottom: 100px;
+}
+
+body #view .temperature {
+  margin-bottom: 90px;
+}
+
+body #view .temperature #currentTemperature {
+  display: inline-block;
+  position: relative;
+  font-size: 90px;
+}
+
+body #view .temperature #currentTemperature::after {
+  content: '\2103';
+  position: absolute;
+  top: 0;
+  left: 100%;
+  font-size: 26px;
+  line-height: 1em;
+}
+
+body #view .slider.slick-slider {
+  margin: 0;
+}
+
+body #view .slider .slick-dots {
+  bottom: 100%;
+  padding-bottom: 20px;
+}
+
+body #view .slider .slick-dots li {
+  width: 10px;
+}
+
+body #view .slider .slick-dots li button {
+  width: 10px;
+  height: 10px;
+}
+
+body #view .slider .slick-dots li button::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 50%;
+  border: solid 2px white;
+  opacity: 1;
+}
+
+body #view .slider .slick-dots li.slick-active button::before {
+  opacity: 1;
+  background-color: white;
+}
+
+body #view .slider #hours .col .hour {
+  margin-bottom: 20px;
+  line-height: 25px;
+}
+
+body #view .slider #hours .col .icon {
+  display: inline-block;
+  max-width: 50px;
+  margin-bottom: 20px;
+}
+
+body #view .slider #hours .col .temp {
+  line-height: 20px;
+  margin-bottom: 20px;
+}
+
+body #view .slider #hours .col .temp::after {
+  content: '\2103';
+}
+
+body #view .slider #hours .col .humidity::before {
+  content: '';
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  background-image: url(../media/drop.png);
+  background-position: bottom;
+  background-repeat: no-repeat;
+}
+
+body #view .slider #hours .col .humidity::after {
+  content: '%';
+}
+
+body #view .slider #hours .col:not(:last-child) {
+  border-right: solid 1px rgba(255, 255, 255, 0.5);
+}
+
+body #view .slider #forecast .col .wday {
+  margin-bottom: 20px;
+  line-height: 25px;
+}
+
+body #view .slider #forecast .col .icon {
+  display: inline-block;
+  max-width: 50px;
+  margin-bottom: 20px;
+}
+
+body #view .slider #forecast .col .tempmin {
+  line-height: 20px;
+  margin-bottom: 20px;
+}
+
+body #view .slider #forecast .col .tempmin::after {
+  content: '\2103';
+}
+
+body #view .slider #forecast .col .tempmax {
+  line-height: 20px;
+  margin-bottom: 20px;
+}
+
+body #view .slider #forecast .col .tempmax::after {
+  content: '\2103';
+}
+
+body #view .slider #forecast .col .humidity::before {
+  content: '';
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  background-image: url(../media/drop.png);
+  background-position: bottom;
+  background-repeat: no-repeat;
+}
+
+body #view .slider #forecast .col .humidity::after {
+  content: '%';
+}
+
+body #view .slider #forecast .col:not(:last-child) {
+  border-right: solid 1px rgba(255, 255, 255, 0.5);
+}
+
+body #view.loading > .wrapper {
+  transform: translateY(100%);
+}
+
+body #view.loading > .wrapper.content {
+  opacity: 0;
+}
+
+body #view.loading > .wrapper.preloader {
+  opacity: 1;
+}
+
+/*# sourceMappingURL=facepalm.css.map */

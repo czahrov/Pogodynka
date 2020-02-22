@@ -1,0 +1,294 @@
+$color: (
+  'light':      #fff,
+  'blue-dark':  #27329e,
+  'blue-light': #2576f9,
+  'dark':       #000
+);
+
+@each $name, $value in $color{
+  .bg-#{$name}{
+    background-color: $value;
+  }
+
+  .fc-#{$name}{
+    color: $value;
+  }
+}
+
+@keyframes spin {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+
+  }
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+  line-height: 1em;
+  cursor: default;
+}
+
+body{
+  background-image: linear-gradient( 180deg, darken( map-get( $color, 'blue-dark' ), 10% ), transparent );
+  background-repeat: no-repeat;
+
+  #view{
+    position: relative;
+    margin: 15px 32px 20px;
+    border-radius: 10px;
+    background-image: linear-gradient( 0deg, darken( map-get( $color, 'blue-light' ), 20% ), transparent );
+    background-repeat: no-repeat;
+    overflow: hidden;
+
+    & > .wrapper{
+      padding: 32px 11px;
+      transition: all 1s ease-in-out;
+
+      &.preloader{
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 100%;
+        height: 100%;
+        opacity: 0;
+
+        img{
+          animation: spin 2s linear infinite;
+        }
+
+      }
+
+      &.content{
+        position: relative;
+      }
+
+    }
+
+    .city{
+      margin-bottom: 30px;
+
+      #cityName{
+
+        &, &:hover{
+          color: #fff;
+        }
+
+      }
+
+    }
+
+    .date{
+      margin-bottom: 100px;
+    }
+
+    .condition{
+
+    }
+
+    .temperature{
+      margin-bottom: 90px;
+
+      #currentTemperature{
+        display: inline-block;
+        position: relative;
+        font-size: 90px;
+
+        &::after{
+          content: '\2103';
+          position: absolute;
+          top: 0;
+          left: 100%;
+          font-size: 26px;
+          line-height: 1em;
+        }
+
+      }
+
+    }
+
+    .slider{
+
+      &.slick-slider{
+        margin: 0;
+      }
+
+      .slick-dots{
+        bottom: 100%;
+        padding-bottom: 20px;
+
+        li{
+          width: 10px;
+
+          button{
+            width: 10px;
+            height: 10px;
+
+            &::before{
+              content: '';
+              width: 10px;
+              height: 10px;
+              background-color: rgba(255,255,255,0);
+              border-radius: 50%;
+              border: solid 2px white;
+              opacity: 1;
+            }
+
+          }
+
+          &.slick-active{
+
+            button{
+
+              &::before{
+                opacity: 1;
+                background-color: rgba(255,255,255,1);
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+      #hours{
+
+        .col{
+
+          .hour{
+            margin-bottom: 20px;
+            line-height: 25px;
+          }
+
+          .icon{
+            display: inline-block;
+            max-width: 50px;
+            margin-bottom: 20px;
+          }
+
+          .temp{
+            line-height: 20px;
+            margin-bottom: 20px;
+
+            &::after{
+              content: '\2103';
+            }
+
+          }
+
+          .humidity{
+
+            &::before{
+              content: '';
+              width: 1em;
+              height: 1em;
+              display: inline-block;
+              background-image: url(../media/drop.png);
+              background-position: bottom;
+              background-repeat: no-repeat;
+            }
+
+            &::after{
+              content: '%';
+            }
+
+          }
+
+          &:not(:last-child){
+            border-right: solid 1px rgba(#fff, 0.5);
+          }
+
+        }
+
+      }
+
+      #forecast{
+
+        .col{
+
+          .wday{
+            margin-bottom: 20px;
+            line-height: 25px;
+          }
+
+          .icon{
+            display: inline-block;
+            max-width: 50px;
+            margin-bottom: 20px;
+          }
+
+          .tempmin{
+            line-height: 20px;
+            margin-bottom: 20px;
+
+            &::after{
+              content: '\2103';
+            }
+
+          }
+
+          .tempmax{
+            line-height: 20px;
+            margin-bottom: 20px;
+
+            &::after{
+              content: '\2103';
+            }
+
+          }
+
+          .humidity{
+
+            &::before{
+              content: '';
+              width: 1em;
+              height: 1em;
+              display: inline-block;
+              background-image: url(../media/drop.png);
+              background-position: bottom;
+              background-repeat: no-repeat;
+            }
+
+            &::after{
+              content: '%';
+            }
+
+          }
+
+          &:not(:last-child){
+            border-right: solid 1px rgba(#fff, 0.5);
+          }
+
+        }
+
+      }
+
+    }
+
+    &.loading{
+
+      & > .wrapper{
+        transform: translateY(100%);
+
+        &.content{
+          opacity: 0;
+        }
+
+        &.preloader{
+          opacity: 1;
+        }
+
+      }
+
+    }
+
+  }
+
+}
