@@ -10,8 +10,16 @@
 
   </head>
   <body class="bg-blue-dark">
-    <div id="pogodynka_container"> </div>
-    
+    <div class="container-fluid">
+      <div id="view" class="bg-blue-light fc-light text-center loading">
+        <div class="wrapper preloader row align-items-center justify-content-center">
+          <img class="d-flex" src="media/sun.png" alt="loader"/>
+        </div>
+        <div id="pogodynka_container" class="wrapper content"> </div>
+      </div>
+    </div>
+
+
     <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -19,6 +27,5 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="js/slick.min.js" charset="utf-8"></script>
     <script src="js/pogodynka.js" charset="utf-8"></script>
-    <script src="js/facepalm.js" charset="utf-8"></script>
   </body>
 </html>
