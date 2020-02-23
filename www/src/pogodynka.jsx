@@ -1,9 +1,10 @@
 function CityName(props){
+  let link = ['https://google.com/maps/search/',props.lat,",",props.long].join('');
   return(
     <div class="row city">
       <div class="col-12">
         <img src="media/pin.png" alt=""/>
-        <a id="cityName" href="">{props.name}</a>
+        <a id="cityName" href={link}>{props.name}</a>
       </div>
     </div>
   );
@@ -40,27 +41,30 @@ function CurrentTemperature(props){
 }
 
 function TileForecast(props) {
+  let icon_link = "http://openweathermap.org/img/wn/"+props.code+"@2x.png";
   return(
     <div class="col">
-      <div class="wday">{props.day}</div>
-      <img class='icon' src="http://openweathermap.org/img/wn/{props.code}@2x.png" alt=""/>
-      <div class="tempmin">{props.tempMin}</div>
-      <div class="tempmax">{props.tempMax}</div>
+      <div class="wday">{new Date(props.day*1000).toGMTString().match(/^(\w+),/)[1]}</div>
+      <img class='icon' src={icon_link} alt=""/>
+      <div class="tempmin">{Math.round(props.tempMin*10)/10}</div>
+      <div class="tempmax">{Math.round(props.tempMax*10)/10}</div>
       <div class="humidity">{props.humidity}</div>
     </div>
   );
 }
 
 function TileHour( props ){
+  let icon_link = "http://openweathermap.org/img/wn/"+props.code+"@2x.png";
   return(
     <div class="col">
-      <div class="hour">{props.time}</div>
-      <img class='icon' src="http://openweathermap.org/img/wn/{props.code}@2x.png" alt=""/>
-      <div class="temp">{props.temp}</div>
+      <div class="hour">{new Date(props.time * 1000).toLocaleTimeString().split(':').slice(0,2).join(':')}</div>
+      <img class='icon' src={icon_link} alt=""/>
+      <div class="temp">{Math.round( props.temp * 10 ) / 10}</div>
       <div class="humidity">{props.humidity}</div>
     </div>
   );
 }
+
 class Pogodynka extends React.Component{
   constructor(props){
     super(props);
@@ -71,15 +75,25 @@ class Pogodynka extends React.Component{
     console.log({props: props});
   }
 
+  createTilesHour = ()=>{
+    let ret = [];
+    this.props.forecast.list.slice(0,5).map( (item)=>{
+      ret.push( <TileHour time={item.dt} code={item.weather[0].icon} temp={item.main.temp} humidity={item.main.humidity} /> );
+    } );
+    return ret;
+  }
+
+  createTilesForecast = ()=>{
+    let ret = [];
+    this.props.forecast.list.filter( (item)=>{
+      return /12:00/.test(item.dt_txt);
+    } ).slice(0,5).map( (item)=>{
+      ret.push( <TileForecast day={item.dt} code={item.weather[0].icon} tempMin={item.main.temp_min} tempMax={item.main.temp_max} humidity={item.main.humidity}/> );
+    } );
+    return ret;
+  }
 
   render(){
-    // let hoursTiles = this.props.forecast.list.slice(0,5).map( (item)=>{
-    //   console.log({item:item});
-    //   <TileHour time={item.dt} code={item.weather[0].icon} temp={item.main.temp} humidity={item.main.humidity} />
-    //   // this.TileHour( item.dt, item.weather[0].icon, item.main.temp, item.main.humidity );
-    //
-    // } );
-
     return(
       <div class="container-fluid">
         <div id="view" class="bg-blue-light fc-light text-center loading">
@@ -87,7 +101,7 @@ class Pogodynka extends React.Component{
             <img class="d-flex" src="media/sun.png" alt="loader"/>
           </div>
           <div class="wrapper content">
-            <CityName name={this.props.weather.name}/>
+            <CityName name={this.props.weather.name} lat={this.props.weather.coord.lat} long={this.props.weather.coord.lon}/>
             <CurrentDate date={this.props.weather.dt}/>
             <CurrentWeather condition={this.props.weather.weather[0].main}/>
             <CurrentTemperature temperature={this.props.weather.main.temp}/>
@@ -95,21 +109,12 @@ class Pogodynka extends React.Component{
             <div class="slider">
               <div class="wrapper">
                 <div id='hours' class="row">
-                  <TileHour time='' code='' temp='' humidity='' />
-                  <TileHour time='' code='' temp='' humidity='' />
-                  <TileHour time='' code='' temp='' humidity='' />
-                  <TileHour time='' code='' temp='' humidity='' />
-                  <TileHour time='' code='' temp='' humidity='' />
+                  {this.createTilesHour()}
                 </div>
               </div>
               <div class="wrapper">
                 <div id='forecast' class="row">
-                  <TileForecast day='' code='' tempMin='' tempMax='' humidity=''/>
-                  <TileForecast day='' code='' tempMin='' tempMax='' humidity=''/>
-                  <TileForecast day='' code='' tempMin='' tempMax='' humidity=''/>
-                  <TileForecast day='' code='' tempMin='' tempMax='' humidity=''/>
-                  <TileForecast day='' code='' tempMin='' tempMax='' humidity=''/>
-
+                  {this.createTilesForecast()}
                 </div>
               </div>
             </div>
@@ -118,7 +123,6 @@ class Pogodynka extends React.Component{
       </div>
 
     );
-
   }
 
 
@@ -246,6 +250,13 @@ getCurrentPosition( (position)=>{
         <Pogodynka position={position} weather={weather} forecast={forecast}/>,
         document.getElementById('pogodynka_container')
       );
+
+      $('.slider').slick({
+        arrows: false,
+        dots: true,
+        infinite: false,
+
+      })
 
       $('#view').removeClass('loading');
 

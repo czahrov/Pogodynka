@@ -7,16 +7,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function CityName(props) {
+  var link = ['https://google.com/maps/search/', props.lat, ",", props.long].join('');
   return React.createElement(
-    "div",
-    { "class": "row city" },
+    'div',
+    { 'class': 'row city' },
     React.createElement(
-      "div",
-      { "class": "col-12" },
-      React.createElement("img", { src: "media/pin.png", alt: "" }),
+      'div',
+      { 'class': 'col-12' },
+      React.createElement('img', { src: 'media/pin.png', alt: '' }),
       React.createElement(
-        "a",
-        { id: "cityName", href: "" },
+        'a',
+        { id: 'cityName', href: link },
         props.name
       )
     )
@@ -25,11 +26,11 @@ function CityName(props) {
 
 function CurrentDate(props) {
   return React.createElement(
-    "div",
-    { "class": "row date" },
+    'div',
+    { 'class': 'row date' },
     React.createElement(
-      "div",
-      { "class": "col-12" },
+      'div',
+      { 'class': 'col-12' },
       new Date(props.date * 1000).toDateString()
     )
   );
@@ -37,14 +38,14 @@ function CurrentDate(props) {
 
 function CurrentWeather(props) {
   return React.createElement(
-    "div",
-    { "class": "row condition" },
+    'div',
+    { 'class': 'row condition' },
     React.createElement(
-      "div",
-      { "class": "col-12" },
+      'div',
+      { 'class': 'col-12' },
       React.createElement(
-        "div",
-        { id: "weatherCondition" },
+        'div',
+        { id: 'weatherCondition' },
         props.condition
       )
     )
@@ -53,14 +54,14 @@ function CurrentWeather(props) {
 
 function CurrentTemperature(props) {
   return React.createElement(
-    "div",
-    { "class": "row temperature" },
+    'div',
+    { 'class': 'row temperature' },
     React.createElement(
-      "div",
-      { "class": "col-12" },
+      'div',
+      { 'class': 'col-12' },
       React.createElement(
-        "div",
-        { id: "currentTemperature" },
+        'div',
+        { id: 'currentTemperature' },
         Math.round(props.temperature * 10) / 10
       )
     )
@@ -68,51 +69,53 @@ function CurrentTemperature(props) {
 }
 
 function TileForecast(props) {
+  var icon_link = "http://openweathermap.org/img/wn/" + props.code + "@2x.png";
   return React.createElement(
-    "div",
-    { "class": "col" },
+    'div',
+    { 'class': 'col' },
     React.createElement(
-      "div",
-      { "class": "wday" },
-      props.day
+      'div',
+      { 'class': 'wday' },
+      new Date(props.day * 1000).toGMTString().match(/^(\w+),/)[1]
     ),
-    React.createElement("img", { "class": "icon", src: "http://openweathermap.org/img/wn/{props.code}@2x.png", alt: "" }),
+    React.createElement('img', { 'class': 'icon', src: icon_link, alt: '' }),
     React.createElement(
-      "div",
-      { "class": "tempmin" },
-      props.tempMin
-    ),
-    React.createElement(
-      "div",
-      { "class": "tempmax" },
-      props.tempMax
+      'div',
+      { 'class': 'tempmin' },
+      Math.round(props.tempMin * 10) / 10
     ),
     React.createElement(
-      "div",
-      { "class": "humidity" },
+      'div',
+      { 'class': 'tempmax' },
+      Math.round(props.tempMax * 10) / 10
+    ),
+    React.createElement(
+      'div',
+      { 'class': 'humidity' },
       props.humidity
     )
   );
 }
 
 function TileHour(props) {
+  var icon_link = "http://openweathermap.org/img/wn/" + props.code + "@2x.png";
   return React.createElement(
-    "div",
-    { "class": "col" },
+    'div',
+    { 'class': 'col' },
     React.createElement(
-      "div",
-      { "class": "hour" },
-      props.time
+      'div',
+      { 'class': 'hour' },
+      new Date(props.time * 1000).toLocaleTimeString().split(':').slice(0, 2).join(':')
     ),
-    React.createElement("img", { "class": "icon", src: "http://openweathermap.org/img/wn/{props.code}@2x.png", alt: "" }),
+    React.createElement('img', { 'class': 'icon', src: icon_link, alt: '' }),
     React.createElement(
-      "div",
-      { "class": "temp" },
-      props.temp
+      'div',
+      { 'class': 'temp' },
+      Math.round(props.temp * 10) / 10
     ),
     React.createElement(
-      "div",
-      { "class": "humidity" },
+      'div',
+      { 'class': 'humidity' },
       props.humidity
     )
   );
@@ -126,6 +129,25 @@ var Pogodynka = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Pogodynka.__proto__ || Object.getPrototypeOf(Pogodynka)).call(this, props));
 
+    _this.createTilesHour = function () {
+      var ret = [];
+      _this.props.forecast.list.slice(0, 5).map(function (item) {
+        ret.push(React.createElement(TileHour, { time: item.dt, code: item.weather[0].icon, temp: item.main.temp, humidity: item.main.humidity }));
+      });
+      return ret;
+    };
+
+    _this.createTilesForecast = function () {
+      var ret = [];
+      _this.props.forecast.list.filter(function (item) {
+        return (/12:00/.test(item.dt_txt)
+        );
+      }).slice(0, 5).map(function (item) {
+        ret.push(React.createElement(TileForecast, { day: item.dt, code: item.weather[0].icon, tempMin: item.main.temp_min, tempMax: item.main.temp_max, humidity: item.main.humidity }));
+      });
+      return ret;
+    };
+
     _this.state = {};
 
     console.log({ props: props });
@@ -133,60 +155,45 @@ var Pogodynka = function (_React$Component) {
   }
 
   _createClass(Pogodynka, [{
-    key: "render",
+    key: 'render',
     value: function render() {
-      // let hoursTiles = this.props.forecast.list.slice(0,5).map( (item)=>{
-      //   console.log({item:item});
-      //   <TileHour time={item.dt} code={item.weather[0].icon} temp={item.main.temp} humidity={item.main.humidity} />
-      //   // this.TileHour( item.dt, item.weather[0].icon, item.main.temp, item.main.humidity );
-      //
-      // } );
-
       return React.createElement(
-        "div",
-        { "class": "container-fluid" },
+        'div',
+        { 'class': 'container-fluid' },
         React.createElement(
-          "div",
-          { id: "view", "class": "bg-blue-light fc-light text-center loading" },
+          'div',
+          { id: 'view', 'class': 'bg-blue-light fc-light text-center loading' },
           React.createElement(
-            "div",
-            { "class": "wrapper preloader row align-items-center justify-content-center" },
-            React.createElement("img", { "class": "d-flex", src: "media/sun.png", alt: "loader" })
+            'div',
+            { 'class': 'wrapper preloader row align-items-center justify-content-center' },
+            React.createElement('img', { 'class': 'd-flex', src: 'media/sun.png', alt: 'loader' })
           ),
           React.createElement(
-            "div",
-            { "class": "wrapper content" },
-            React.createElement(CityName, { name: this.props.weather.name }),
+            'div',
+            { 'class': 'wrapper content' },
+            React.createElement(CityName, { name: this.props.weather.name, lat: this.props.weather.coord.lat, long: this.props.weather.coord.lon }),
             React.createElement(CurrentDate, { date: this.props.weather.dt }),
             React.createElement(CurrentWeather, { condition: this.props.weather.weather[0].main }),
             React.createElement(CurrentTemperature, { temperature: this.props.weather.main.temp }),
             React.createElement(
-              "div",
-              { "class": "slider" },
+              'div',
+              { 'class': 'slider' },
               React.createElement(
-                "div",
-                { "class": "wrapper" },
+                'div',
+                { 'class': 'wrapper' },
                 React.createElement(
-                  "div",
-                  { id: "hours", "class": "row" },
-                  React.createElement(TileHour, { time: "", code: "", temp: "", humidity: "" }),
-                  React.createElement(TileHour, { time: "", code: "", temp: "", humidity: "" }),
-                  React.createElement(TileHour, { time: "", code: "", temp: "", humidity: "" }),
-                  React.createElement(TileHour, { time: "", code: "", temp: "", humidity: "" }),
-                  React.createElement(TileHour, { time: "", code: "", temp: "", humidity: "" })
+                  'div',
+                  { id: 'hours', 'class': 'row' },
+                  this.createTilesHour()
                 )
               ),
               React.createElement(
-                "div",
-                { "class": "wrapper" },
+                'div',
+                { 'class': 'wrapper' },
                 React.createElement(
-                  "div",
-                  { id: "forecast", "class": "row" },
-                  React.createElement(TileForecast, { day: "", code: "", tempMin: "", tempMax: "", humidity: "" }),
-                  React.createElement(TileForecast, { day: "", code: "", tempMin: "", tempMax: "", humidity: "" }),
-                  React.createElement(TileForecast, { day: "", code: "", tempMin: "", tempMax: "", humidity: "" }),
-                  React.createElement(TileForecast, { day: "", code: "", tempMin: "", tempMax: "", humidity: "" }),
-                  React.createElement(TileForecast, { day: "", code: "", tempMin: "", tempMax: "", humidity: "" })
+                  'div',
+                  { id: 'forecast', 'class': 'row' },
+                  this.createTilesForecast()
                 )
               )
             )
@@ -308,6 +315,13 @@ getCurrentPosition(function (position) {
     getForecast(position, function (forecast) {
 
       ReactDOM.render(React.createElement(Pogodynka, { position: position, weather: weather, forecast: forecast }), document.getElementById('pogodynka_container'));
+
+      $('.slider').slick({
+        arrows: false,
+        dots: true,
+        infinite: false
+
+      });
 
       $('#view').removeClass('loading');
     });
